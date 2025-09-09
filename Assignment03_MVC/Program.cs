@@ -1,3 +1,8 @@
+using Assignment.BLL.Services;
+using Assignment.DAL.Context;
+using Assignment.DAL.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 namespace Assignment03_MVC
 {
     public class Program
@@ -8,6 +13,15 @@ namespace Assignment03_MVC
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
+            builder.Services.AddScoped<IDepartmentRepository , DepartmentRepository>();
+            //builder.Services.AddScoped<CompanyDbContext>();
+            builder.Services.AddDbContext<CompanyDbContext>(options =>
+            {   
+                var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+                options.UseSqlServer(connectionString);
+            });
 
             var app = builder.Build();
 
